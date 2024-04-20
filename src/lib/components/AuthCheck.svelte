@@ -2,7 +2,7 @@
     import { user } from '$lib/firebase'
 </script>
 
-{#if user}
+{#if $user}
     <slot></slot>
 {:else}
     <p>You must be logged in to view this page. <a href="/login">LOGIN</a></p>
