@@ -1,5 +1,6 @@
 <script>
     import { page } from "$app/stores"
+    import AnimatedRoute from "$lib/components/AnimatedRoute.svelte";
 </script>
 
 <nav>
@@ -19,11 +20,13 @@
     </ul>
 </nav>
 
-<main>
-    <div class="login-card">
-        <slot></slot>
-    </div>
-</main>
+<AnimatedRoute>
+    <main>
+        <div class="login-card">
+            <slot></slot>
+        </div>
+    </main>
+</AnimatedRoute>
 
 <style>
     main{
