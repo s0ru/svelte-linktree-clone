@@ -39,6 +39,7 @@
 
     .login-card{
         margin-top: 10vh;
+        padding: 3em;
         border-radius: 10px;
         outline-style: solid;
         outline-color: var(--detail-color);

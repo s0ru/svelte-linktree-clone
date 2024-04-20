@@ -1,5 +1,5 @@
 <script>
-    import { auth } from "$lib/firebase"
+    import { auth, user } from "$lib/firebase"
     import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 
     const signInWithGoogle = async () => {
@@ -11,7 +11,13 @@
 
 <h2>Login</h2>
 
+{#if $user}
+<h2 class="welcome-msg">Welcome, <span>{$user.displayName}</span></h2>
+<p class="logged-in-msg">You are logged in</p>
+<button class="login-btn" on:click={() => signOut(auth)}>Log Out</button>
+{:else}
 <button class="login-btn" on:click={signInWithGoogle}>Sign in with Google</button>
+{/if}
 
 <style>
     .login-btn{
@@ -31,4 +37,8 @@
     .login-btn:active{
         background-color: var(--accent-color);
     }
+
+    .welcome-msg > span{
+        color: var(--detail-color);
+    }    
 </style>
