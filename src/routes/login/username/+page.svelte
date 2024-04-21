@@ -20,6 +20,7 @@
         clearTimeout(debounceTimer)
 
         debounceTimer = setTimeout(async () => {
+            if(!username) {loading = false; return;}
             const ref = doc(db, "usernames", username);
             const exists = await getDoc(ref).then((doc) => doc.exists())
     
@@ -28,16 +29,52 @@
         }, 500);
     }
 
-    const saveUsername = async () => {}
+    const saveUsername = async () => {
+        const batch = writeBatch(db);
+        if(!$user) return
+        batch.set(doc(db, "usernames", username), {uid: $user?.uid})
+        batch.set(doc(db, "users", $user?.uid), {
+            username,
+            photoURL: $user?.photoURL ?? null,
+            published: true,
+            bio: 'Default bio',
+            links: [
+                {
+                    title: 'Test link',
+                    url: 'https://linktr.ee',
+                    icon: 'custom'
+                }
+            ]
+        })
+
+        await batch.commit()
+    }
+
+    const re = /^(?=[a-zA-Z0-9._]{3,16}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+  
+    $: isValid = username?.length > 2 && username.length < 16 && re.test(username);
+    $: isTouched = username.length > 0;
+    $: isTaken = isValid && !isAvailable && !loading
 </script>
 
 <AuthCheck>
     <h2>Username</h2>
     <form on:submit|preventDefault={saveUsername}>
         <input type="text" placeholder="U s e r n a m e" bind:value={username} on:input={checkAvailable}/>
-        <NeonButton click={() => {}}>Confirm @{username}</NeonButton>
+        {#if isTouched && isValid && !isTaken}<NeonButton click={() => {}}>Confirm @{username}</NeonButton>{/if}
     </form>
-    <p>{username} is {#if !isAvailable}<span class="red">not</span>{/if} <span class={isAvailable ? 'green': 'red'}>available</span>.</p>
+
+    <p><span class="username-text">{username}</span><span class="cursor">|</span> is
+    {#if loading}
+        <span class="loading">...</span>
+    {:else if !isValid || !isTouched}
+        <span class="error">invalid</span>
+    {:else if isTaken}
+        <span class="error">taken</span>
+    {:else}
+        <span class="success">available</span>
+    {/if}
+    </p>
 </AuthCheck>
 
 <style>
@@ -69,14 +106,29 @@
         outline-color: var(--detail-color);
         box-shadow: inset 0 0 100px -50px var(--accent-color);
     }
-
-    .green{
+    .username-text{
+        color: var(--detail-color);
+    }
+    .success{
         color: #39FF14;
         text-shadow: 1px -1px 5px #39FF14;
     }
 
-    .red{
+    .loading{
+        color: yellow;
+        text-shadow: 1px -1px 5px yellow;
+    }
+    .error{
         color: #FF3131;
         text-shadow: 1px -1px 5px #FF3131;
+    }
+
+    .cursor{
+        animation: blink 1s infinite;
+    }
+
+    @keyframes blink{
+        0% {opacity: 0;}
+        100% {opacity: 1;}
     }
 </style>
