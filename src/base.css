@@ -1,0 +1,17 @@
+:root {
+  --background-color: #282c34;
+  --card-background-color: #222831;
+  --accent-color: #a0153e;
+  --detail-color: #ff204e;
+}
+
+@font-face {
+  font-family: FiraCode;
+  src: url('/FiraCode-VariableFont_wght.ttf');
+}
+
+html {
+  font-family: FiraCode;
+  background-color: var(--background-color);
+  color: white;
+}
