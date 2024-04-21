@@ -1,4 +1,5 @@
 <script>
+    import NeonButton from "$lib/components/NeonButton.svelte";
     import { auth, user } from "$lib/firebase"
     import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 
@@ -14,30 +15,12 @@
 {#if $user}
 <h2 class="welcome-msg">Welcome, <span>{$user.displayName}</span></h2>
 <p class="logged-in-msg">You are logged in</p>
-<button class="login-btn" on:click={() => signOut(auth)}>Log Out</button>
+<NeonButton click={() => signOut(auth)}>Log Out</NeonButton>
 {:else}
-<button class="login-btn" on:click={signInWithGoogle}>Sign in with Google</button>
+<NeonButton click={signInWithGoogle}>Sign in with Google</NeonButton>
 {/if}
 
 <style>
-    .login-btn{
-        font-size: 1.2em;
-        margin-top: 3vh;
-        width: 15vw;
-        height: 7.5vh;
-        color: white;
-        background-color: var(--detail-color);
-        border-radius: 10px;
-        border: none;
-        outline-style: solid;
-        outline-width: medium;
-        outline-color: white;
-    }
-
-    .login-btn:active{
-        background-color: var(--accent-color);
-    }
-
     .welcome-msg > span{
         color: var(--detail-color);
     }    

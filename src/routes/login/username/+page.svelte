@@ -1,5 +1,6 @@
 <script>
     import AuthCheck from '$lib/components/AuthCheck.svelte'
+    import NeonButton from '$lib/components/NeonButton.svelte';
     import { db, user } from '$lib/firebase'
     import { doc, getDoc, writeBatch } from 'firebase/firestore'
 
@@ -34,7 +35,7 @@
     <h2>Username</h2>
     <form on:submit|preventDefault={saveUsername}>
         <input type="text" placeholder="U s e r n a m e" bind:value={username} on:input={checkAvailable}/>
-        <button>Confirm @{username}</button>
+        <NeonButton click={() => {}}>Confirm @{username}</NeonButton>
     </form>
     <p>{username} is {#if !isAvailable}<span class="red">not</span>{/if} <span class={isAvailable ? 'green': 'red'}>available</span>.</p>
 </AuthCheck>
@@ -77,20 +78,5 @@
     .red{
         color: #FF3131;
         text-shadow: 1px -1px 5px #FF3131;
-    }
-
-    button{
-        font-size: 1.2em;
-        padding: 1em;
-        width: fit-content;
-        max-width: 30vw;
-        height: 7.5vh;
-        color: white;
-        background-color: var(--detail-color);
-        border-radius: 10px;
-        border: none;
-        outline-style: solid;
-        outline-width: medium;
-        outline-color: white;
     }
 </style>
