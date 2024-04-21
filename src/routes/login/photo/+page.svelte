@@ -27,8 +27,8 @@
     }
 </script>
 
-<h2>Upload a profile picture</h2>
 <AuthCheck>
+    <h2>Upload a profile picture</h2>
     <form>
         <img src={previewURL ?? $userData?.photoURL ?? "/user.png"} alt="photoURL" width=256 height="256" />
         {#if false}
