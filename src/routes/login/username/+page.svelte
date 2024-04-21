@@ -1,7 +1,7 @@
 <script>
     import AuthCheck from '$lib/components/AuthCheck.svelte'
     import NeonButton from '$lib/components/NeonButton.svelte';
-    import { db, user } from '$lib/firebase'
+    import { db, user, userData } from '$lib/firebase'
     import { doc, getDoc, writeBatch } from 'firebase/firestore'
 
     let username = ""
@@ -59,22 +59,28 @@
 
 <AuthCheck>
     <h2>Username</h2>
-    <form on:submit|preventDefault={saveUsername}>
-        <input type="text" placeholder="U s e r n a m e" bind:value={username} on:input={checkAvailable}/>
-        {#if isTouched && isValid && !isTaken}<NeonButton click={() => {}}>Confirm @{username}</NeonButton>{/if}
-    </form>
-
-    <p><span class="username-text">{username}</span><span class="cursor">|</span> is
-    {#if loading}
-        <span class="loading">...</span>
-    {:else if !isValid || !isTouched}
-        <span class="error">invalid</span>
-    {:else if isTaken}
-        <span class="error">taken</span>
+    {#if $userData?.username}
+        <p>Your username is <span class="username-text">@{$userData.username}</span></p>
+        <p class="error">Usernames cannot be changed.</p>
+        <a class="username-text" href="/login/photo">Upload a profile picture</a>
     {:else}
-        <span class="success">available</span>
+        <form on:submit|preventDefault={saveUsername}>
+            <input type="text" placeholder="U s e r n a m e" bind:value={username} on:input={checkAvailable}/>
+            {#if isTouched && isValid && !isTaken}<NeonButton click={() => {}}>Confirm @{username}</NeonButton>{/if}
+        </form>
+
+        <p><span class="username-text">{username}</span><span class="cursor">|</span> is
+        {#if loading}
+            <span class="loading">...</span>
+        {:else if !isValid || !isTouched}
+            <span class="error">invalid</span>
+        {:else if isTaken}
+            <span class="error">taken</span>
+        {:else}
+            <span class="success">available</span>
+        {/if}
+        </p>
     {/if}
-    </p>
 </AuthCheck>
 
 <style>
