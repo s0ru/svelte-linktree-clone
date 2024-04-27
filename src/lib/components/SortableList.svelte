@@ -74,5 +74,17 @@
     {/each}
   </ul>
 {:else}
-  <p>No items</p>
+  <p class="error">No items</p>
 {/if}
+
+<style>
+  li{
+    list-style: none;
+    width: fit-content;
+  }
+
+  .error{
+    color: #FF3131;
+    text-shadow: 1px -1px 5px #FF3131;
+  }
+</style>
