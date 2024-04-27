@@ -1,4 +1,6 @@
 <script lang="js">
+    import UserLink from "$lib/components/UserLink.svelte";
+
     export let data;
 </script>
 
@@ -14,6 +16,11 @@
     <p>{data.bio ?? "no bio yet"}</p>
 
     <ul>
+        {#each data.links as item}
+            <li>
+                <UserLink {...item}/>
+            </li>
+        {/each}
     </ul>
 </main>
 
