@@ -50,9 +50,9 @@
         });
     
         formData.set({
-            icon: "",
+            icon: "custom",
             title: "",
-            url: "",
+            url: "https://",
         });
     
         showForm = false;
@@ -122,6 +122,9 @@
       {:else}
         <NeonButton click={() => (showForm = true)}>Add a Link</NeonButton>
       {/if}
+    {:else}
+        <p class="error">This is not yours, friend</p>
+        <a href="/login"><NeonButton click={() => {}}>LOGIN</NeonButton></a>
     {/if}
 </main>
 
@@ -191,6 +194,10 @@
     outline-width: medium;
     outline-color: var(--detail-color);
     box-shadow: 0 0 10px var(--accent-color);
+  }
+
+  .mini-button:hover{
+    box-shadow: inset 0 0 100px -50px var(--accent-color);
   }
 
   .mini-button:disabled{
