@@ -32,10 +32,30 @@
     const formData = writable(formDefaults);
   
     let showForm = false;
+    let showBio = false;
   
     $: urlIsValid = $formData.url.match(/^(ftp|http|https):\/\/[^ "]+$/);
     $: titleIsValid = $formData.title.length < 20 && $formData.title.length > 0;
     $: formIsValid = urlIsValid && titleIsValid;
+
+    /**
+     * @type {NodeJS.Timeout}
+     */
+    let debounceTimer;
+
+
+    //@ts-ignore
+    async function updateBio(e){
+      clearTimeout(debounceTimer)
+      if(!$user?.uid) return;
+      const userRef = doc(db, "users", $user.uid);
+
+      debounceTimer = setTimeout(async () => {
+        await updateDoc(userRef, {
+          bio: $userData?.bio
+        });
+      }, 500)
+    }
 
     // @ts-ignore
     async function addLink(e) {
@@ -84,7 +104,12 @@
   
 <main>
     {#if $userData?.username == $page.params.username}
-      <h1>Edit your Profile</h1>
+      <h1>Edit your <a class="profile-link" href="/{$page.params.username}">profile</a></h1>
+
+      <h2>Bio: <button class="bio-btn" on:click={() => {showBio = !showBio}}>[...]</button></h2>
+      {#if showBio}
+        <textarea maxlength="100" class="bio-text" bind:value={$userData.bio} on:input={updateBio}></textarea>
+      {/if}
 
       <SortableList list={$userData?.links} on:sort={sortList} let:item let:index>
         <div class="link">
@@ -240,5 +265,38 @@
   .error{
     color: #FF3131;
     text-shadow: 1px -1px 5px #FF3131;
+  }
+
+  .bio-btn{
+    background: transparent;
+    border: none;
+    color: var(--detail-color);
+    font-family: "Firacode";
+    font-size: 1.2em;
+  }
+
+  .bio-text{
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1em;
+    font-family: "Firacode";
+    padding: 1em;
+
+    outline-style: solid;
+    outline-width: medium;
+    outline-color: var(--detail-color);
+    box-shadow: 0 0 10px var(--accent-color);
+    border-radius: 10px;
+
+    min-width: 25vw;
+    max-width: 30vw;
+    max-height: 20vh;
+  }
+
+  .profile-link{
+    color: var(--detail-color);
+        text-shadow: 1px -1px 5px var(--detail-color);
+        text-decoration: none;
   }
 </style>
