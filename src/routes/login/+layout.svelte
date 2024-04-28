@@ -30,7 +30,7 @@
 
 <style>
     main{
-       width: 100vw;
+       width: 100%;
        height: fit-content;
        display: flex;
        justify-content: space-around;

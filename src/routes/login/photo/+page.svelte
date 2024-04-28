@@ -28,7 +28,7 @@
 </script>
 
 <AuthCheck>
-    <h2>Upload a profile picture</h2>
+    <h2>Upload a profile picture or <a class="profile-link" href="/{$userData?.username}">go to your profile</a></h2>
     <form>
         <img src={previewURL ?? $userData?.photoURL ?? "/user.png"} alt="photoURL" width=256 height="256" />
         {#if !uploading}
@@ -113,5 +113,11 @@
         100%{
             left: 85%;
         }
+    }
+
+    .profile-link{
+        color: var(--detail-color);
+        text-shadow: 1px -1px 5px var(--detail-color);
+        text-decoration: none;
     }
 </style>
