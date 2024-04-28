@@ -1,5 +1,8 @@
 <script lang="js">
     import UserLink from "$lib/components/UserLink.svelte";
+    import NeonButton from "$lib/components/NeonButton.svelte";
+    import {user, userData} from "$lib/firebase"
+    import { page } from "$app/stores"
 
     export let data;
 </script>
@@ -10,6 +13,9 @@
 </svelte:head>
 
 <main>
+    {#if $user && $userData?.username == $page.params.username}
+        <a class="edit-btn" href="/{$userData?.username}/edit"><NeonButton click={() => {}}>EDIT</NeonButton></a>
+    {/if}
     <h1 class="accent-text">{data.username}</h1>
 
     <img src={data.photoURL ?? "/user.png"} alt="photoURL" width="200">
@@ -31,6 +37,12 @@
        display: flex;
        flex-direction: column;
        align-items: center;
+    }
+
+    .edit-btn{
+        position: absolute;
+        top: 1%;
+        right: 1%;
     }
 
     .accent-text{
