@@ -4,7 +4,7 @@
     export let title = 'fancy title'
 </script>
 
-<a href={url}>
+<a href={url} target="_blank">
     <img src={`/${icon}.png`} alt={icon} width="32" height="32"/>
     <span>{title}</span>
 </a>
