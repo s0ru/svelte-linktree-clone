@@ -20,7 +20,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@vercel/speed-insights": "^1.0.10",
 		"firebase": "^10.11.0",
-		"firebase-admin": "^12.1.0"
+		"firebase-admin": "^12.1.0",
+		"i": "^0.3.7",
+		"npm": "^10.6.0"
 	}
 }
